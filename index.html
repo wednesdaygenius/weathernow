@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>5 Day Weather Forecast</title>
+    <link rel="stylesheet" href="generics.css" />
+    <link rel="stylesheet" href="fonts.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script async type="module" src="weather.js"></script>
+    <script async type="module" src="utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <div class="content">
+      <header>
+        <a href="https://wednesdaygenius.com">
+          <img class="wg-logo" src="logo.jpg" alt="Wednesday Genius" />
+        </a>
+        <img
+          class="weather-logo"
+          src="WeatherNOW+.png"
+          alt="WeatherNOW+ logo"
+        />
+      </header>
+
+      <div class="bloglink">
+        <h1>
+          <a
+            href="https://wednesdaygenius.com/code-playground/weather-app-javascript/"
+            >Click here to read about the development of this app</a
+          >
+        </h1>
+      </div>
+
+      <div class="weatherapp-container">
+        <div class="mapAndSearchContainer">
+          <div
+            id="map"
+            class="mapSection"
+            style="width: 95%; height: 350px"
+          ></div>
+
+          <div id="searchCriteria" class="weatherSearch">
+            <!-- current location cloud image -->
+            <div id="searchCurrentLocation">
+              <img
+                class="current-location-img"
+                src="search-current-location.png"
+                alt="Search by your current location"
+              />
+              <img
+                class="current-location-img-hover"
+                src="search-current-location-hover.png"
+                alt="Search by your current location"
+              />
+            </div>
+
+            <div class="inputArea">
+              <div id="searchForThis">
+                <p>Search the world</p>
+                <input
+                  type="text"
+                  id="searchBox"
+                  placeholder="Enter a Place or Postcode"
+                />
+                <!-- dropdown for city search results -->
+                <div id="placeList"></div>
+                <div id="showError"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- weather results -->
+        <div id="resultsContent" class="grid-wrapper">
+          <section id="day0" class="todayCard">
+            <div class="todayContainer">
+              <div class="locDateTime">
+                <div id="location"></div>
+                <div id="forecastDay0"></div>
+                <div id="forecastTime0" class="day0Time day0HideFirst"></div>
+                <!-- <div id="currentLocalTime"></div> -->
+              </div>
+              <div class="day0Data">
+                <div class="day0Time now">
+                  <div id="currentLocalTime"></div>
+                  Currently, we're expecting
+                  <div id="forecastDesc0"></div>
+                </div>
+                <div id="forecastImg0"></div>
+                <div class="day0DataCol">
+                  <div id="forecastTemp0"></div>
+                </div>
+              </div>
+            </div>
+            <div class="forecast3Hours">
+              <div class="smallCard">
+                <div id="forecastDay1" class="date"></div>
+                <div id="forecastTime1" class="day0Time"></div>
+                <div id="forecastImg1"></div>
+                <div id="forecastTemp1"></div>
+                <div id="forecastDesc1"></div>
+              </div>
+              <div class="smallCard">
+                <div id="forecastDay2" class="date"></div>
+                <div id="forecastTime2" class="day0Time"></div>
+                <div id="forecastImg2"></div>
+                <div id="forecastTemp2"></div>
+                <div id="forecastDesc2"></div>
+              </div>
+              <div class="smallCard">
+                <div id="forecastDay3" class="date"></div>
+                <div id="forecastTime3" class="day0Time"></div>
+                <div id="forecastImg3"></div>
+                <div id="forecastTemp3"></div>
+                <div id="forecastDesc3"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="restOfWeek">
+            <div class="rowCardContainer">
+              <div id="forecastDate00" class="title long"></div>
+
+              <div class="ROWData">
+                <div class="card" id="day1">
+                  <div id="forecastTime00"></div>
+                  <div id="forecastImg00"></div>
+                  <div id="forecastTemp00"></div>
+                  <div id="forecastDesc00"></div>
+                </div>
+                <div class="forecast3HoursROW">
+                  <div class="smallCardROW">
+                    <div id="forecastDate012" class="date"></div>
+                    <div id="forecastTime012" class="time"></div>
+                    <div id="forecastImg012"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp012"></div>
+                      <div id="forecastDesc012"></div>
+                    </div>
+                  </div>
+                  <div class="smallCardROW">
+                    <div id="forecastDate018" class="date"></div>
+                    <div id="forecastTime018" class="time"></div>
+                    <div id="forecastImg018"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp018"></div>
+                      <div id="forecastDesc018"></div>
+                    </div>
+                  </div>
+                  <div class="smallCardROW">
+                    <div id="forecastDate021" class="date"></div>
+                    <div id="forecastTime021" class="time"></div>
+                    <div id="forecastImg021"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp021"></div>
+                      <div id="forecastDesc021"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rowCardContainer">
+              <div id="forecastDate10" class="title long"></div>
+
+              <div class="ROWData">
+                <div class="card" id="day2">
+                  <!-- <div id="forecastDate10" class="title long"></div> -->
+                  <div id="forecastTime10"></div>
+                  <div id="forecastImg10"></div>
+                  <div id="forecastTemp10"></div>
+                  <div id="forecastDesc10"></div>
+                </div>
+                <div class="forecast3HoursROW">
+                  <div class="smallCardROW">
+                    <div id="forecastDate112" class="date"></div>
+                    <div id="forecastTime112" class="time"></div>
+                    <div id="forecastImg112"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp112"></div>
+                      <div id="forecastDesc112"></div>
+                    </div>
+                  </div>
+                  <div class="smallCardROW">
+                    <div id="forecastDate118" class="date"></div>
+                    <div id="forecastTime118" class="time"></div>
+                    <div id="forecastImg118"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp118"></div>
+                      <div id="forecastDesc118"></div>
+                    </div>
+                  </div>
+                  <div class="smallCardROW">
+                    <div id="forecastDate121" class="date"></div>
+                    <div id="forecastTime121" class="time"></div>
+                    <div id="forecastImg121"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp121"></div>
+                      <div id="forecastDesc121"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rowCardContainer">
+              <div id="forecastDate20" class="title long"></div>
+
+              <div class="ROWData">
+                <div class="card" id="day03">
+                  <!-- <div id="forecastDate20" class="title long"></div> -->
+                  <div id="forecastTime20"></div>
+                  <div id="forecastImg20"></div>
+                  <div id="forecastTemp20"></div>
+                  <div id="forecastDesc20"></div>
+                </div>
+                <div class="forecast3HoursROW">
+                  <div class="smallCardROW">
+                    <div id="forecastDate212" class="date"></div>
+                    <div id="forecastTime212" class="time"></div>
+                    <div id="forecastImg212"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp212"></div>
+                      <div id="forecastDesc212"></div>
+                    </div>
+                  </div>
+                  <div class="smallCardROW">
+                    <div id="forecastDate218" class="date"></div>
+                    <div id="forecastTime218" class="time"></div>
+                    <div id="forecastImg218"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp218"></div>
+                      <div id="forecastDesc218"></div>
+                    </div>
+                  </div>
+                  <div class="smallCardROW">
+                    <div id="forecastDate221" class="date"></div>
+                    <div id="forecastTime221" class="time"></div>
+                    <div id="forecastImg221"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp221"></div>
+                      <div id="forecastDesc221"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rowCardContainer">
+              <div id="forecastDate30" class="title long"></div>
+
+              <div class="ROWData">
+                <div class="card" id="day4">
+                  <!-- <div id="forecastDate30" class="title long"></div> -->
+                  <div id="forecastTime30"></div>
+                  <div id="forecastImg30"></div>
+                  <div id="forecastTemp30"></div>
+                  <div id="forecastDesc30"></div>
+                </div>
+                <div class="forecast3HoursROW">
+                  <div class="smallCardROW">
+                    <div id="forecastDate312" class="date"></div>
+                    <div id="forecastTime312" class="time"></div>
+                    <div id="forecastImg312"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp312"></div>
+                      <div id="forecastDesc312"></div>
+                    </div>
+                  </div>
+                  <div class="smallCardROW">
+                    <div id="forecastDate318" class="date"></div>
+                    <div id="forecastTime318" class="time"></div>
+                    <div id="forecastImg318"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp318"></div>
+                      <div id="forecastDesc318"></div>
+                    </div>
+                  </div>
+                  <div class="smallCardROW">
+                    <div id="forecastDate321" class="date"></div>
+                    <div id="forecastTime321" class="time"></div>
+                    <div id="forecastImg321"></div>
+                    <div class="smallCardROWData">
+                      <div id="forecastTemp321"></div>
+                      <div id="forecastDesc321"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      Copyright © 2023 · Jessica Barnaby / Wednesday Genius ·
+      hello@wednesdaygenius.com
+    </div>
+  </body>
+</html>
