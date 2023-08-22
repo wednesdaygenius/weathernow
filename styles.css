@@ -81,7 +81,7 @@ header {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
+  /* height: auto; */
   transition: opacity 0.3s ease;
 }
 
@@ -101,7 +101,8 @@ header {
   height: 4rem;
   border-radius: 10px;
   padding: 20px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  width: 30vw;
 }
 
 /* dropdown box (hidden by default) */
@@ -125,7 +126,6 @@ header {
 
 #placeList li {
   padding: 5px;
-  /* margin: 5px 5px 0 5px; */
 }
 
 #placeList li:hover {
@@ -155,12 +155,6 @@ header {
   max-height: 30vh;
   margin: auto;
 }
-
-/* #mapSection iframe {
-  border-radius: 10px;
-  margin-top: 20px;
-  max-height: 30vh;
-} */
 
 #resultsContent {
   display: none;
@@ -314,37 +308,25 @@ header {
   font-size: 1.5rem;
 }
 
-/* Smallest Screens (Mobile) */
-@media screen and (max-width: 400px) {
+/* Small Screens */
+@media screen and (max-width: 576px) {
   #searchCriteria {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    /* border: 1px solid red; */
+    height: auto;
     align-items: center;
   }
 
-  #searchCurrentLocation {
-    margin-bottom: 30px;
-  }
-}
-
-/* Small Screens (Mobile) */
-@media (min-width: 401px) and (max-width: 576px) {
-  .weather-logo {
-    width: 40%;
+  .inputArea {
+    margin-top: 20px;
   }
 
-  .wg-logo {
-    width: 100%;
-  }
-
-  .weatherSearch > *:first-child {
-    flex: 1;
-  }
-
-  .weatherSearch > *:last-child {
-    flex: 2;
+  #searchBox {
+    height: 4rem;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 1.4rem;
+    width: 80vw;
   }
 }
 
@@ -366,6 +348,14 @@ header {
   .mapSection {
     min-height: 40vh;
     min-width: 60vw;
+  }
+
+  #searchBox {
+    height: 4rem;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 1.5rem;
+    width: 50vw;
   }
 }
 
